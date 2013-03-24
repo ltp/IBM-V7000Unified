@@ -6,7 +6,7 @@ use warnings;
 use IBM::StorageSystem;
 use Carp qw(croak);
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 our @METHODS=qw(array disk drive enclosure export fabric filesystem health host 
 interface iogroup mount node quota service snapshot task vdisk);
