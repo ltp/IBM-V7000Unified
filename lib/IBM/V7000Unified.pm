@@ -6,7 +6,7 @@ use warnings;
 use IBM::StorageSystem;
 use Carp qw(croak);
 
-our $VERSION = '0.021';
+our $VERSION = '0.022';
 
 our @METHODS=qw(array disk drive enclosure export fabric filesystem health host 
 interface iogroup mount node quota service snapshot task vdisk);
@@ -27,7 +27,6 @@ compression_cpu_pc cpu_pc drive_r_io drive_r_mb drive_r_ms drive_w_io
 drive_w_mb drive_w_ms fc_io fc_mb iscsi_io iscsi_mb mdisk_r_io mdisk_r_mb mdisk_r_ms 
 mdisk_w_io mdisk_w_mb mdisk_w_ms sas_io sas_mb total_cache_pc vdisk_r_io vdisk_r_mb 
 vdisk_r_ms vdisk_w_io vdisk_w_mb vdisk_w_ms write_cache_pc);
-# TO DO: mdisk lsmgr
 
 foreach my $method ( @METHODS ) {
 	{
