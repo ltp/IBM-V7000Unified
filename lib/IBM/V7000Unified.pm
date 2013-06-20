@@ -929,7 +929,7 @@ Returns an array of L<IBM::StorageSystem::IOGroup> objects representing all conf
 
         # Print only those file system that are not mounted
         map { print $_->file_system . " is not mounted.\n" }
-        grep { $_->mount_status ne ’mounted’ }
+        grep { $_->mount_status ne 'mounted' }
         $ibm->get_mounts;
 
 Returns the mount identified by the mount parameter as a L<IBM::StorageSystem::Mount> object.
