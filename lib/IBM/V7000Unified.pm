@@ -8,25 +8,31 @@ use Carp qw(croak);
 
 our $VERSION = '0.022';
 
-our @METHODS=qw(array disk drive enclosure export fabric filesystem health host 
-interface iogroup mount node quota service snapshot task vdisk);
+our @METHODS=qw(array disk drive enclosure export fabric filesystem health 
+host interface iogroup mount node quota service snapshot task vdisk);
 
-our @ATTRS = qw(auth_service_cert_set auth_service_configured auth_service_enabled 
-auth_service_pwd_set auth_service_type auth_service_url auth_service_user_name 
-bandwidth cluster_isns_IP_address cluster_locale cluster_ntp_IP_address code_level 
-console_IP email_contact email_contact2 email_contact2_alternate email_contact2_primary 
-email_contact_alternate email_contact_location email_contact_primary email_reply 
-email_state gm_inter_cluster_delay_simulation gm_intra_cluster_delay_simulation 
-gm_link_tolerance gm_max_host_delay has_nas_key id id_alias inventory_mail_interval 
-iscsi_auth_method iscsi_chap_secret layer location name partnership rc_buffer_size 
-relationship_bandwidth_limit space_allocated_to_vdisks space_in_mdisk_grps 
-statistics_frequency statistics_status stats_threshold tier tier_capacity tier_free_capacity 
-time_zone total_allocated_extent_capacity total_free_space total_mdisk_capacity 
-total_overallocation total_used_capacity total_vdisk_capacity total_vdiskcopy_capacity
-compression_cpu_pc cpu_pc drive_r_io drive_r_mb drive_r_ms drive_w_io 
-drive_w_mb drive_w_ms fc_io fc_mb iscsi_io iscsi_mb mdisk_r_io mdisk_r_mb mdisk_r_ms 
-mdisk_w_io mdisk_w_mb mdisk_w_ms sas_io sas_mb total_cache_pc vdisk_r_io vdisk_r_mb 
-vdisk_r_ms vdisk_w_io vdisk_w_mb vdisk_w_ms write_cache_pc);
+our @ATTRS = qw(auth_service_cert_set auth_service_configured 
+auth_service_enabled auth_service_pwd_set auth_service_type auth_service_url 
+auth_service_user_name bandwidth cluster_isns_IP_address cluster_locale 
+cluster_ntp_IP_address code_level console_IP email_contact email_contact2 
+email_contact2_alternate email_contact2_primary email_contact_alternate 
+email_contact_location email_contact_primary email_reply email_state 
+gm_inter_cluster_delay_simulation gm_intra_cluster_delay_simulation 
+gm_link_tolerance gm_max_host_delay has_nas_key id id_alias 
+inventory_mail_interval iscsi_auth_method iscsi_chap_secret layer location 
+name partnership rc_buffer_size relationship_bandwidth_limit 
+space_allocated_to_vdisks space_in_mdisk_grps statistics_frequency 
+statistics_status stats_threshold tier tier_capacity tier_free_capacity 
+time_zone total_allocated_extent_capacity total_free_space total_mdisk_capacity
+total_overallocation total_used_capacity total_vdisk_capacity 
+total_vdiskcopy_capacity compression_cpu_pc cpu_pc drive_r_io drive_r_mb 
+drive_r_ms drive_w_io drive_w_mb drive_w_ms fc_io fc_mb iscsi_io iscsi_mb 
+mdisk_r_io mdisk_r_mb mdisk_r_ms mdisk_w_io mdisk_w_mb mdisk_w_ms sas_io sas_mb
+total_cache_pc vdisk_r_io vdisk_r_mb vdisk_r_ms vdisk_w_io vdisk_w_mb 
+vdisk_w_ms write_cache_pc cluster_throughput cluster_client_throughput 
+cluster_create_delete_latency cluster_create_delete_operations 
+cluster_open_close_latency cluster_open_close_operations 
+cluster_read_write_operations cluster_read_write_latency);
 
 foreach my $method ( @METHODS ) {
 	{
@@ -63,9 +69,14 @@ foreach my $attr ( @ATTRS ) {
 }
 
 sub new {
-        my ($class, %args) = @_;
+        my ( $class, %args ) = @_;
+
         my $self = bless {} , $class;
-        my %opts = ( user => $self->{user}, key_path => $self->{key_path}, batch_mode => 1, master_opts => '-q' );
+        my %opts = (	user        => $self->{user}, 
+			key_path    => $self->{key_path},
+			batch_mode  => 1, 
+			master_opts => '-q' 
+		);
 
         $self->{ss} = IBM::StorageSystem->new( %args );
 
@@ -93,14 +104,15 @@ IBM::V7000Unified is a Perl API to IBM V7000 Unified CLI.
 
 =head3 new 
 
-        my $ibm = IBM::V7000Unified->new(      
-										user            => 'admin',
-                                        host            => 'my-v7000-unified.company.com',
-                                        key_path        => '/path/to/my/.ssh/private_key'
-                        ) or die "Couldn't create object! $!\n";
+        my $ibm = IBM::V7000Unified->new(
+				user     => 'admin',
+				host     => 'my-v7000-unified.company.com',
+				key_path => '/path/to/my/.ssh/private_key'
+			) or die "Couldn't create object! $!\n";
 
-Constructor - creates a new IBM::V7000Unified object.  This method accepts three mandatory parameters
-and one optional parameter, the three mandatory parameters are:
+Constructor - creates a new IBM::V7000Unified object.  This method accepts 
+three mandatory parameters and one optional parameter, the three mandatory 
+parameters are:
 
 =over 3
 
@@ -115,8 +127,8 @@ The hostname or IP address of the device to which we are connecting.
 =item key_path
 
 Either a relative or fully qualified path to the private ssh key valid for the
-user name and device to which we are connecting.  Please note that the executing user
-must have read permission to this key.
+user name and device to which we are connecting.  Please note that the 
+executing user must have read permission to this key.
 
 =back
 
@@ -126,10 +138,11 @@ The optional parameter is:
 
 =item stats_threshold
 
-The period in seconds for which retrieved system statistics will be considered fresh,
-after which they will be re-retrieved.  If not set, the default value of this parameter
-is zero meaning that the statistics are not refreshed unless done explicitly via the 
-B<refresh> method of an L<IBM:StorageSystem::Statistic> object.
+The period in seconds for which retrieved system statistics will be considered 
+fresh, after which they will be re-retrieved.  If not set, the default value 
+of this parameter is zero meaning that the statistics are not refreshed unless 
+done explicitly via the B<refresh> method of an 
+L<IBM:StorageSystem::Statistic> object.
 
 =back
 
@@ -139,13 +152,14 @@ Specifies if the authentication service certificate has been set.
 
 =head3 auth_service_configured
 
-True if the auth_service_type is configured and either one of the following is true:     
+True if the auth_service_type is configured and either one of the following 
+is true:
 
 =over 3
 
-=item * The auth_service_type is LDAP-only (if at least one LDAP server is configured)    
+=item * The auth_service_type is LDAP-only (if at least one LDAP server is configured)
 
-=item * The auth_service_type is TIP-only:                  
+=item * The auth_service_type is TIP-only:
 
 =over 5
 
@@ -167,8 +181,8 @@ Specifies if the authentication password has been set.
 
 =head3 auth_service_type
 
-returns the authentication services type, either; Tivoli Integrated Portal (TIP) or Native Lightweight
-Directory Access Protocol (LDAP)
+returns the authentication services type, either; Tivoli Integrated Portal 
+(TIP) or Native Lightweight Directory Access Protocol (LDAP)
 
 =head3 auth_service_url
 
@@ -180,7 +194,8 @@ Returns the user name used for authentication services.
 
 =head3 bandwidth
 
-Returns the bandwidth available on the intersystem link for background copy, in megabytes per second (MBps).
+Returns the bandwidth available on the intersystem link for background copy, 
+in megabytes per second (MBps).
 
 =head3 cluster_isns_IP_address
 
@@ -204,7 +219,8 @@ Returns the cluster console IP address.
 
 =head3 email_contact
 
-Returns the clusters email contact information - this value is usually the system name.
+Returns the clusters email contact information - this value is usually the 
+system name.
 
 =head3 email_contact2
 
@@ -281,8 +297,9 @@ Returns the iSCSI CHAP secret.
 =head3 layer
 
 Returns the cluster layer type; either replication or storage (default).
-Replication means the system can create partnerships with Storwize StorageSystem Unified. 
-Storage means the system can present storage to Storwize StorageSystem Unified.
+Replication means the system can create partnerships with Storwize 
+StorageSystem Unified. Storage means the system can present storage to 
+Storwize StorageSystem Unified.
 
 =head3 location
 
@@ -294,13 +311,16 @@ Returns the cluster name.
 
 =head3 partnership
 
-Returns the cluster partnership type, either one of; fully_configured, partially_configured_local, 
-partially_configured_local_stopped, not_present, fully_configured_stopped, fully_configured_remote_stopped,
-fully_configured_local_excluded, fully_configured_remote_excluded or fully_configured_exceeded
+Returns the cluster partnership type, either one of; fully_configured, 
+partially_configured_local, partially_configured_local_stopped, not_present, 
+fully_configured_stopped, fully_configured_remote_stopped, 
+fully_configured_local_excluded, fully_configured_remote_excluded or 
+fully_configured_exceeded
 
 =head3 rc_buffer_size
 
-Returns the cluster resource buffer size assigned for Metro Mirror or Global Mirrored Copy Services.
+Returns the cluster resource buffer size assigned for Metro Mirror or Global 
+Mirrored Copy Services.
 
 =head3 relationship_bandwidth_limit
 
@@ -308,11 +328,13 @@ Returns the cluster relationship bandwidth limit in megabytes per second (MBps).
 
 =head3 space_allocated_to_vdisks
 
-Returns the space allocated to VDisks - this may be in a variable notation format.
+Returns the space allocated to VDisks - this may be in a variable notation 
+format.
 
 =head3 space_in_mdisk_grps
 
-Returns the space allocated to MDisk groups - this may be in a variable notation format.
+Returns the space allocated to MDisk groups - this may be in a variable 
+notation format.
 
 =head3 statistics_frequency
 
@@ -326,31 +348,34 @@ Returns the statistics collection status.
 
 Returns an array containing the supported tier types for the cluster.
 
-B<Note> that this method returns an array of the available tier types and that the ordering
-of these types is preserved from the CLI output.  The ordering of these types can be used to 
-retrieve the tier capacity of each tier type with the B<tier_capacity> command.
+B<Note> that this method returns an array of the available tier types and that 
+the ordering of these types is preserved from the CLI output.  The ordering of 
+these types can be used to retrieve the tier capacity of each tier type with 
+the B<tier_capacity> command.
 
 =head3 tier_capacity
 
 Returns the total tier capacity for each tier type in the cluster.
 
-B<Note> that this method returns an array of tier capacity ivalues, the index of
-which corresponds with the array indexes of tier types as returned by the B<tier> method.
+B<Note> that this method returns an array of tier capacity ivalues, the index 
+of which corresponds with the array indexes of tier types as returned by the 
+B<tier> method.
 
-For example, to print each tier type and the corresponding tier capacity for this cluster:
+For example, to print each tier type and the corresponding tier capacity for 
+this cluster:
 
         for ( my $i = 0; $i < scalar @{ $ibm->tier } ; $i++ ) {
                 print "Tier: " . $ibm->tier->[$i] 
-					. " - Capacity: " . $ibm->tier_capacity->[$i] . "\n"
+			. " - Capacity: " . $ibm->tier_capacity->[$i] . "\n"
         }
 
 =head3 tier_free_capacity
 
 Returns the free tier capacity for each tier type in the cluster.
 
-B<Note> that like the B<tier> and B<tier_capacity> methods, this method also returns an
-array of tier free capacity values, the order of which corresponds with the arrays returned
-by the aforementioned methods.
+B<Note> that like the B<tier> and B<tier_capacity> methods, this method also 
+returns an array of tier free capacity values, the order of which corresponds 
+with the arrays returned by the aforementioned methods.
 
 =head3 time_zone
 
@@ -358,15 +383,18 @@ Returns the cluster time zone.
 
 =head3 total_allocated_extent_capacity
 
-Returns the clusters total allocated capacity - this may be in a variable notation format.
+Returns the clusters total allocated capacity - this may be in a variable 
+notation format.
 
 =head3 total_free_space
 
-Returns the clusters total free space - this may be in a variable notation format.
+Returns the clusters total free space - this may be in a variable notation 
+format.
 
 =head3 total_mdisk_capacity
 
-Returns the clusters total MDisk capacity - this may be in a variable notation format.
+Returns the clusters total MDisk capacity - this may be in a variable notation 
+format.
 
 =head3 total_overallocation
 
@@ -374,28 +402,34 @@ Returns the cluster total overallocation limit.
 
 =head3 total_used_capacity
 
-Returns the clusters total used capacity - this may be in a variable notation format.
+Returns the clusters total used capacity - this may be in a variable notation 
+format.
 
 =head3 total_vdisk_capacity
 
-Returns the clusters total VDisk capacity - this may be in a variable notation format.
+Returns the clusters total VDisk capacity - this may be in a variable notation 
+format.
 
 =head3 total_vdiskcopy_capacity
 
-Returns the clusters total VDisk copy capacity - this may be in a variable notation format.
+Returns the clusters total VDisk copy capacity - this may be in a variable 
+notation format.
 
 =head3 compression_cpu_pc
 
-Returns an L<IBM::StorageSystem::Statistic> object for allocated CPU capacity utilised for compression.
+Returns an L<IBM::StorageSystem::Statistic> object for allocated CPU capacity 
+utilised for compression.
 
 =head3 cpu_pc
 
-Returns an L<IBM::StorageSystem::Statistic> object for allocated CPU capacity utilised for the system.
+Returns an L<IBM::StorageSystem::Statistic> object for allocated CPU capacity 
+utilised for the system.
 
 =head3 drive_r_io
 
-Returns an L<IBM::StorageSystem::Statistic> object the average amount of I/O operations transferred 
-per second for read operations to drives during the sample period.
+Returns an L<IBM::StorageSystem::Statistic> object the average amount of I/O 
+operations transferred per second for read operations to drives during the 
+sample period.
 
 =head3 drive_r_mb
 
