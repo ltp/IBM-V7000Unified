@@ -594,6 +594,86 @@ a finite period, you could set the threshold value low, and reset it afterwards.
 	# Disable automatic refreshing
 	$ibm->stats_threshold = 0;
 
+=head3 cluster_throughput ( $interval )
+
+Returns either a single, or list, of L<IBM::StorageSystem::StatisticsSet> objects containing 
+L<IBM::StorageSystem::Statistics::ClusterThroughput> performance data on bytes read and written
+acorss all nodes and all GPFS filesystems in the cluster.
+
+The method accepts a single optional parameter; the time period for which to return the data.
+The allowed values for this parameter are one of; minute, hour, day, week, month, quarter and year.
+If omitted, this parameter will default to minute.
+
+=head3 cluster_client_throughput ( $interval )
+
+Returns either a single, or list, of L<IBM::StorageSystem::StatisticsSet> objects containing 
+L<IBM::StorageSystem::Statistics::ClusterClientThroughput> performance data on client throughput across 
+all nodes in the target cluster.
+
+The method accepts a single optional parameter; the time period for which to return the data.
+The allowed values for this parameter are one of; minute, hour, day, week, month, quarter and year.
+If omitted, this parameter will default to minute.
+
+=head3 cluster_create_delete_latency ( $interval )
+
+Returns either a single, or list, of L<IBM::StorageSystem::StatisticsSet> objects containing 
+L<IBM::StorageSystem::Statistics::ClusterCreateDeleteLatency> performance data on cluster file creation
+and deletion latency across all nodes in the target cluster.
+
+The method accepts a single optional parameter; the time period for which to return the data.
+The allowed values for this parameter are one of; minute, hour, day, week, month, quarter and year.
+If omitted, this parameter will default to minute.
+
+=head3 cluster_create_delete_operations ( $interval )
+
+Returns either a single, or list, of L<IBM::StorageSystem::StatisticsSet> objects containing 
+L<IBM::StorageSystem::Statistics::ClusterCreateDeleteOperations> performance data on cluster file creation
+and deletion operations across all nodes in the target cluster.
+
+The method accepts a single optional parameter; the time period for which to return the data.
+The allowed values for this parameter are one of; minute, hour, day, week, month, quarter and year.
+If omitted, this parameter will default to minute.
+
+=head3 cluster_open_close_latency ( $interval )
+
+Returns either a single, or list, of L<IBM::StorageSystem::StatisticsSet> objects containing 
+L<IBM::StorageSystem::Statistics::ClusterOpenCloseLatency> performance data on cluster file open
+and close latency across all nodes in the target cluster.
+
+The method accepts a single optional parameter; the time period for which to return the data.
+The allowed values for this parameter are one of; minute, hour, day, week, month, quarter and year.
+If omitted, this parameter will default to minute.
+
+=head3 cluster_open_close_operations ( $interval )
+
+Returns either a single, or list, of L<IBM::StorageSystem::StatisticsSet> objects containing 
+L<IBM::StorageSystem::Statistics::ClusterCreateDeleteOperations> performance data on cluster file open
+and close operations across all nodes in the target cluster.
+
+The method accepts a single optional parameter; the time period for which to return the data.
+The allowed values for this parameter are one of; minute, hour, day, week, month, quarter and year.
+If omitted, this parameter will default to minute.
+
+=head3 cluster_read_write_latency ( $interval )
+
+Returns either a single, or list, of L<IBM::StorageSystem::StatisticsSet> objects containing 
+L<IBM::StorageSystem::Statistics::ClusterReadWriteLatency> performance data on cluster file read
+and write latency across all nodes in the target cluster.
+
+The method accepts a single optional parameter; the time period for which to return the data.
+The allowed values for this parameter are one of; minute, hour, day, week, month, quarter and year.
+If omitted, this parameter will default to minute.
+
+=head3 cluster_read_write_operations ( $interval )
+
+Returns either a single, or list, of L<IBM::StorageSystem::StatisticsSet> objects containing 
+L<IBM::StorageSystem::Statistics::ClusterReadWriteOperations> performance data on cluster file read
+and write operations across all nodes in the target cluster.
+
+The method accepts a single optional parameter; the time period for which to return the data.
+The allowed values for this parameter are one of; minute, hour, day, week, month, quarter and year.
+If omitted, this parameter will default to minute.
+
 =head3 array( $id )
 
         # Print the capacity and RAID level of array 1 in GB
